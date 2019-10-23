@@ -5,14 +5,16 @@
 int minimumCoin(int amount, int coins[], int numOfCoins)
 {
     if(amount==0) return 0;
-    int res=INT_MAX;
+    int res=amount+1;
     for(int coin=0;coin<numOfCoins;coin++)
     {
         if(coins[coin]<=amount)
         {
-            int sub_res=minimumCoin(amount-coins[coin],coins,numOfCoins);
-
-            if(sub_res<res) res=sub_res+1;
+            if(amount>=coins[coin])
+            {
+                int sub_res=minimumCoin(amount-coins[coin],coins,numOfCoins);
+                if(sub_res<res) res=sub_res+1;
+            }
         }
     }
     return res;
@@ -29,10 +31,13 @@ int minimumCoin(int amount, int coins[], int numOfCoins)
 
     for(int am=1;am<=amount;am++)
     {
-        requariedCoin[am]=INT_MAX;
+        requariedCoin[am]=amount+1;
         for(int coin=0;coin<numOfCoins;coin++)
         {
-            requariedCoin[am]=min(requariedCoin[am],requariedCoin[am-coins[coin]]+1);
+            if(am>=coins[coin])
+            {
+                requariedCoin[am]=min(requariedCoin[am],requariedCoin[am-coins[coin]]+1);
+            }
         }
     }
     return requariedCoin[amount];
