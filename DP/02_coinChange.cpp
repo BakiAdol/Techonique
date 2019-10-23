@@ -39,9 +39,11 @@ int minimumCoin(int amount, int coins[], int numOfCoins)
 }
 //--------------------------------------------------------------------------------------------
 
-
-// total waya of make amount using coins not followed order
-// Complexity O(2^n)
+/*
+* Recursive approach
+* Total waya of make amount using coins(coins not followed order)
+* Complexity O(2^n)
+*/
 int coinCombo(int amount, int coins[], int lenOfCoins)
 {
     if(amount==0) return 1;
@@ -53,8 +55,13 @@ int coinCombo(int amount, int coins[], int lenOfCoins)
     }
     return combo;
 }
+//--------------------------------------------------------------------------------------------
 
-// total waya of make amount using coins followed order
+/*
+* Recursive approach
+* Total waya of make amount using coins(coins followed order)
+* Complexity O(2^n)
+*/
 int coinCombo(int amount, int coins[], int lenOfCoins, int courrent)
 {
     if(amount==0) return 1;
@@ -66,3 +73,34 @@ int coinCombo(int amount, int coins[], int lenOfCoins, int courrent)
     }
     return combo;
 }
+//--------------------------------------------------------------------------------------------
+
+/*
+* Dynamic Programing Bottom-Up approach
+* Total waya of make amount using coins(coins followed order)
+* Complexity O(2^n)
+*/
+int coinCombo(int amount, int coins[], int lenOfCoins)
+{
+    int dp[lenOfCoins+1][amount+1];
+
+    for(int am=0;am<=amount;am++) dp[0][am]=0;
+    for(int coin=0;coin<=lenOfCoins;coin++) dp[coin][0]=1;
+
+    for(int coin=1;coin<=lenOfCoins;coin++)
+    {
+        for(int am=1;am<=amount;am++)
+        {
+            if(coins[coin-1]<=am)
+            {
+                dp[coin][am]=dp[coin-1][am]+dp[coin][am-coins[coin-1]];
+                continue;
+            }
+            dp[coin][am]=dp[coin-1][am];
+        }
+    }
+
+    return dp[lenOfCoins][amount];
+}
+//--------------------------------------------------------------------------------------------
+
