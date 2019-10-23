@@ -78,7 +78,7 @@ int coinCombo(int amount, int coins[], int lenOfCoins, int courrent)
 /*
 * Dynamic Programing Bottom-Up approach
 * Total waya of make amount using coins(coins followed order)
-* Complexity O(2^n)
+* 
 */
 int coinCombo(int amount, int coins[], int lenOfCoins)
 {
