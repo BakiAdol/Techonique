@@ -1,4 +1,24 @@
 /*
+* Minimum coin need for make chane a certain ammount, unsing recursive approach
+* Complexity O(2^coins) probably
+*/
+int minimumCoin(int amount, int coins[], int numOfCoins)
+{
+    if(amount==0) return 0;
+    int res=INT_MAX;
+    for(int coin=0;coin<numOfCoins;coin++)
+    {
+        if(coins[coin]<=amount)
+        {
+            int sub_res=minimumCoin(amount-coins[coin],coins,numOfCoins);
+
+            if(sub_res<res) res=sub_res+1;
+        }
+    }
+    return res;
+}
+//--------------------------------------------------------------------------------------------
+/*
 * Minimum coin need for make chane a certain ammount, unsing Bottom-Up Dynamic Techonic
 * Complexity O(amount*coins)
 */
