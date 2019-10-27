@@ -10,11 +10,8 @@ int minimumCoin(int amount, int coins[], int numOfCoins)
     {
         if(coins[coin]<=amount)
         {
-            if(amount>=coins[coin])
-            {
-                int sub_res=minimumCoin(amount-coins[coin],coins,numOfCoins);
-                if(sub_res<res) res=sub_res+1;
-            }
+            int sub_res=minimumCoin(amount-coins[coin],coins,numOfCoins);
+            if(sub_res<res) res=sub_res+1;
         }
     }
     return res;
