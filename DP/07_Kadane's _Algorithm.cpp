@@ -4,12 +4,34 @@
 void CSS()
 {
     int n=9;
-    int res[]={-2,1,-3,4,-1,2,1,-5,4};
-    int oldMax=res[0],newMax=res[0];
+    int arr[]={-2,1,-3,4,-1,2,1,-5,4};
+
+    int first=0,last=0;
+    int recentSum=arr[0];
+    int maxSum=arr[0];
     for(int i=1;i<n;i++)
     {
-        oldMax=max(oldMax+res[i],res[i]);
-        newMax=max(oldMax,newMax);
+        if(recentSum+arr[i]>arr[i])
+        {
+            recentSum+=arr[i];
+            if(recentSum>maxSum)
+            {
+                maxSum=recentSum;
+                last=i;
+            }
+        }
+        else
+        {
+            recentSum=arr[i];
+            if(maxSum<recentSum)
+            {
+                maxSum=recentSum;
+                first=last=i;
+            }
+        }
     }
-    cout << newMax << endl;
+    cout << "First index = " << first << endl;
+    cout << "Last index = " << last << endl;
+    cout << "Maximum Sum = " << maxSum << endl;
 }
+
