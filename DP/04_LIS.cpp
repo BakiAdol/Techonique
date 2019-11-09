@@ -1,14 +1,21 @@
 
-void LIS(int arr[], int n)
+int LIS(int arr[], int n)
 {
-    vector<int> v;
-    for(int i=0;i<n;i++)
-    {
-        auto it = lower_bound(v.begin(),v.end(),arr[i]);
-        if(it==v.end()) v.push_back(arr[i]);
-        else v[it-v.begin()]=arr[i];
-    }
+    int lcs[n];
 
-    cout << v.size() << endl;
+    for(int i=0;i<n;i++) lcs[i]=1;
+
+    int maxLen=1;
+
+    for(int i=1;i<n;i++)
+    {
+        for(int j=0;j<i;j++)
+        {
+            if(arr[i]>arr[j]) lcs[i]=max(lcs[i],lcs[j]+1);
+
+        }
+        maxLen=max(maxLen,lcs[i]);
+    }
+    return maxLen;
 }
 
