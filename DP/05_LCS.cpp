@@ -1,14 +1,18 @@
 // Top-Down approach
+int dp[1000][1000];
 int LCS(string first, int lastInd1, string second, int lastInd2)
 {
     if(lastInd1 < 0 || lastInd2<0) return 0;
+    
+    if(dp[lastInd1][lastInd2]) return dp[lastInd1][lastInd2];
+    
     if(first[lastInd1]==second[lastInd2])
     {
-        return 1 + LCS(first,lastInd1-1,second,lastInd2-1);
+        return dp[lastInd1][lastInd2] = 1 + LCS(first,lastInd1-1,second,lastInd2-1);
     }
     else
     {
-        return max(LCS(first,lastInd1-1,second,lastInd2),
+        return dp[lastInd1][lastInd2] = max(LCS(first,lastInd1-1,second,lastInd2),
                    LCS(first,lastInd1,second,lastInd2-1));
     }
 }
