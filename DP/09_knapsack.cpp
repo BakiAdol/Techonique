@@ -5,7 +5,7 @@ int n=5;
 
 int knapsack(int pos, int space)
 {
-    if(pos>=n or space==0) return 0; // base case, if knapsack is full of array index exceeded
+    if(pos>=n or space==0) return 0; // base case, if knapsack is full or array index exceeded
 
     if(weight[pos]>space) return knapsack(pos+1,space); // if item weight is greater than knapsack weight
 
