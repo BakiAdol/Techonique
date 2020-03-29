@@ -31,7 +31,7 @@ int LISmemo(int pos)
 	int tmp=0;
 	for(int i=pos-1;i>=0;i--)
 	{
-		if(ar[i]<ar[pos]) tmp=max(tmp,LISmemo(i)); 
+		if(ar[i]<ar[pos]) tmp=max(tmp,LISmemo(i));
 	}
 	return memo[pos]=tmp+1;
 }
