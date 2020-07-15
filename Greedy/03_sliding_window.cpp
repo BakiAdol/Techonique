@@ -19,33 +19,36 @@
 *   Output : 9 9 6 7 7 7 9 9
 *
 */
+
 #include <bits/stdc++.h>
 
 using namespace std;
 
-
 int main()
 {
-    int n=10;
+	int n=10;
     int windowSize=3;
     int ar[]={5,9,3,4,6,7,1,6,9,5};
-
+    
     deque<int> q;
+    
     for(int i=0,j=0;j<n;j++)
     {
-        if(!q.empty() and i>q.front()) q.pop_front();
-        if(!q.empty() and ar[q.back()]<ar[j])
-        {
-            while(!q.empty() and ar[q.back()]<ar[j]) q.pop_back();
-        }
-        q.push_back(j);
-        if(j-i==windowSize-1)
-        {
-            i++;
-            cout << ar[q.front()] << endl;
-        }
-    }
-
-    return 0;
+		if(!q.empty() and q.front()<i) q.pop_front();
+		
+		while(!q.empty() and ar[q.back()]<ar[j]) q.pop_back();
+		
+		q.push_back(j);
+		
+		if(j-i==windowSize-1)
+		{
+			i++;
+			cout << ar[q.front()] << endl;
+		}
+	}
+    
+	return 0;
 }
+
+
 
