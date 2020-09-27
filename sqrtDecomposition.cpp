@@ -26,68 +26,74 @@
              Time Complexity O(sqrt(n))
 */
 
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-#define MAX 1000
-
-int arr[MAX];
-int block[100];
 int blockSize;
+int blocks[100];
+int ar[]={3, 8, 1, 9, 5, 4, 6, 7, 2};
 
-//Time Complexity O(1)
-void update(int index, int data)
+void update(int pos, int data)
 {
-    int blockNumber = index/blockSize;
-    block[blockNumber] += data - arr[index];
-    arr[index]=data;
+	blocks[pos/blockSize]+=data-ar[pos];
+	ar[pos]=data;
 }
 
-//Time Complexity O(sqrt(n))
-int query(int f, int l)
+int query(int l, int r)
 {
-    int sum=0;
-    while(f<l && f%blockSize!=0 && f!=0)
-    {
-        sum+=arr[f++];
-    }
-    while(f+blockSize<=l)
-    {
-        sum+=block[f/blockSize];
-        f+=blockSize;
-    }
-    while(f<=l)
-    {
-        sum+=arr[f++];
-    }
-    return sum;
+	int sum=0;
+	int l_block=l/blockSize;
+	int r_block=r/blockSize;
+	
+	if(l_block==r_block)
+	{
+		for(int i=l;i<=r;i++) sum+=ar[i];
+	}
+	else
+	{
+		for(int i=l,f=(l_block+1)*blockSize;i<f;i++)
+		{
+			sum+=ar[i];
+		}
+		for(int i=l_block+1;i<r_block;i++)
+		{
+			sum+=blocks[i];
+		}
+		for(int i=r_block*blockSize;i<=r;i++)
+		{
+			sum+=ar[i];
+		}
+	}
+	
+	return sum;
 }
 
-void initialize(int ar[], int n)
+void ini(int n)
 {
-    int blockIndex=-1;
-    blockSize=sqrt(n);
-    for(int i=0;i<n;i++)
-    {
-        arr[i]=ar[i];
-        if(i%blockSize==0)
-        {
-            blockIndex++;
-        }
-        block[blockIndex]+=arr[i];
-    }
+	int pos=-1;
+	blockSize=sqrt(n);
+	
+	for(int i=0;i<n;i++)
+	{
+		if(i%blockSize==0) pos++;
+		
+		blocks[pos]+=ar[i];
+	}
 }
 
 int main()
 {
-    int ar[]={3, 8, 1, 9, 5, 4, 6, 7, 2};
-    initialize(ar,9);
-    cout << "Sum(1,8) = " << query(1,8) << endl;
-    cout << "Sum(5,6) = " << query(5,6) << endl;
-    cout << "Sum(0,4) = " << query(0,4) << endl;
-    update(5,9);
-    cout << "Sum(1,8) = " << query(1,8) << endl;
-    return 0;
+    ini(9);
+    
+    printf("%d\n",query(2,6));
+    
+    update(3,100);
+    
+    printf("%d\n",query(3,3));
+    printf("%d\n",query(0,8));
+	
+	return 0;
 }
+
 
