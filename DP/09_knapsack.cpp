@@ -13,7 +13,7 @@ int knapsack(int pos, int space)
     // return the maximum result of include this item or not include this item
 }
 
-// DP approach
+// DP Top Down approach
 int weight[]={0,5,7,2,6,8};
 int n=5;
 int dp[50][50]; // initially dp=[0];
@@ -29,4 +29,30 @@ int knapsack(int pos, int space) // first call pos=n
     return dp[pos][space]=max(knapsack(pos-1,space),weight[pos]+knapsack(pos-1,space-weight[pos]));
     // return the maximum result of include this item or not include this item
 }
+
+
+//DP Bottom UP approach
+#define lli 				long long int
+int n,weight;
+lli weights[100005],value[100005];
+lli memo[105][100005];
+lli bottomUp()
+{
+	for(lli i=0;i<=n;i++)
+	{
+		for(lli j=0;j<=weight;j++)
+		{
+			if(i==0 or j==0) memo[i][j]=0;
+			else
+			{
+				if(weights[i]>j) memo[i][j]=memo[i-1][j];
+				else memo[i][j]=max(memo[i-1][j-weights[i]]+value[i],memo[i-1][j]);
+			}
+		}
+	}
+	
+	return memo[n][weight];
+}
+
+
 
