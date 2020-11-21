@@ -4,7 +4,7 @@ int LCS(string first, int lastInd1, string second, int lastInd2)
 {
     if(lastInd1 < 0 || lastInd2<0) return 0;
     
-    if(dp[lastInd1][lastInd2]) return dp[lastInd1][lastInd2];
+    if(dp[lastInd1][lastInd2]!=-1) return dp[lastInd1][lastInd2];
     
     if(first[lastInd1]==second[lastInd2])
     {
