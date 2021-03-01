@@ -1,3 +1,4 @@
+// (x + x^2 + x^3 + x^4.....)%m = ?
 #include<bits/stdc++.h>
 
 using namespace std;
