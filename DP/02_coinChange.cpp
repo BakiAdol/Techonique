@@ -1,108 +1,82 @@
-/*
-* Minimum coin need for make chane a certain ammount, unsing recursive approach
-* Complexity O(2^coins) probably
-*/
-int minimumCoin(int amount, int coins[], int numOfCoins)
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// Minimum coin need to make a certain amount top-down dynamic programming approach
+int memo[10000];
+int minimumCoinToMakeChangeTopDown(int amount, vector<int> coins)
 {
     if(amount==0) return 0;
-    int res=amount+1;
-    for(int coin=0;coin<numOfCoins;coin++)
+    int cou=amount+1;
+    if(memo[amount]!=0) return memo[amount];
+    for(int coin:coins)
     {
-        if(coins[coin]<=amount)
-        {
-            int sub_res=minimumCoin(amount-coins[coin],coins,numOfCoins);
-            if(sub_res<res) res=sub_res+1;
-        }
+        if(coin>amount) continue;
+        cou = min(cou,minimumCoinToMakeChangeTopDown(amount-coin,coins)+1);
     }
-    return res;
+    return memo[amount]=cou;
 }
-//--------------------------------------------------------------------------------------------
-/*
-* Minimum coin need for make chane a certain ammount, unsing Bottom-Up Dynamic Techonic
-* Complexity O(amount*coins)
-*/
-int minimumCoin(int amount, int coins[], int numOfCoins)
+
+// Minimum coin need to make a certain amount bottom-up dynamic programming approach
+int minimumCoinToMakeChangeBottomUp(int amount, vector<int> coins)
 {
-    int requariedCoin[amount+1];
-    requariedCoin[0]=0;
-
-    for(int am=1;am<=amount;am++)
+    vector<int> memo(amount+5,amount);
+    memo[0]=0;
+    for(int i=1;i<=amount;i++)
     {
-        requariedCoin[am]=amount+1;
-        for(int coin=0;coin<numOfCoins;coin++)
+        for(int coin:coins)
         {
-            if(am>=coins[coin])
-            {
-                requariedCoin[am]=min(requariedCoin[am],requariedCoin[am-coins[coin]]+1);
-            }
+            if(coin>i) continue;
+            memo[i]=min(memo[i],memo[i-coin]+1);
         }
     }
-    return requariedCoin[amount];
+    return memo[amount];
 }
-//--------------------------------------------------------------------------------------------
 
-/*
-* Recursive approach
-* Total waya of make amount using coins(coins not followed order)
-* Complexity O(2^n)
-*/
-int coinCombo(int amount, int coins[], int lenOfCoins)
+// Total unique way to make change amount top-down dynamic programming approach
+vector<vector<int>> memo2(20, vector<int> (10000, -1));
+int totalUniqueWayToMakeChangeTopDown(int amount, vector<int> coins, int pos=0)
 {
     if(amount==0) return 1;
     if(amount<0) return 0;
-    int combo=0;
-    for(int i=0;i<lenOfCoins;i++)
+    if(memo2[pos][amount]!=-1) return memo2[pos][amount];
+    int way=0;
+    for(int i=pos;i<(int)coins.size();i++)
     {
-        combo+= coinCombo(amount-coins[i],coins,lenOfCoins);
+        way+=totalUniqueWayToMakeChangeTopDown(amount-coins[i],coins,i);
     }
-    return combo;
+    return memo2[pos][amount]=way;
 }
-//--------------------------------------------------------------------------------------------
 
-/*
-* Recursive approach
-* Total waya of make amount using coins(coins followed order)
-* Complexity O(2^n)
-*/
-int coinCombo(int amount, int coins[], int lenOfCoins, int courrent)
+// Total unique way to make change amount bottom-up dynamic programming approach
+int totalUniqueWayToMakeChangeBottomUp(int amount, vector<int> coins)
 {
-    if(amount==0) return 1;
-    if(amount<0) return 0;
-    int combo=0;
-    for(int i=courrent;i<lenOfCoins;i++)
+    int lenOfCoin = coins.size();
+    vector<vector<int>> memo(lenOfCoin+2, vector<int> (10000));
+
+    for(int i=0;i<=amount;i++) memo[0][i]=0;
+    for(int i=0;i<=lenOfCoin;i++) memo[i][0]=1;
+
+    for (int coin=0;coin<lenOfCoin;coin++)
     {
-        combo+=coinCombo(amount-coins[i],coins,lenOfCoins,i);
-    }
-    return combo;
-}
-//--------------------------------------------------------------------------------------------
-
-/*
-* Dynamic Programing Bottom-Up approach
-* Total waya of make amount using coins(coins followed order)
-* 
-*/
-int coinCombo(int amount, int coins[], int lenOfCoins)
-{
-    int dp[lenOfCoins+1][amount+1];
-
-    for(int am=0;am<=amount;am++) dp[0][am]=0;
-    for(int coin=0;coin<=lenOfCoins;coin++) dp[coin][0]=1;
-
-    for(int coin=1;coin<=lenOfCoins;coin++)
-    {
-        for(int am=1;am<=amount;am++)
+        for (int am=1; am<=amount;am++)
         {
-            if(coins[coin-1]<=am)
-            {
-                dp[coin][am]=dp[coin-1][am]+dp[coin][am-coins[coin-1]];
-                continue;
-            }
-            dp[coin][am]=dp[coin-1][am];
+            memo[coin+1][am] = memo[coin][am]+(coins[coin]>am ? 0 : memo[coin+1][am-coins[coin]]);
         }
     }
-
-    return dp[lenOfCoins][amount];
+    
+    return memo[lenOfCoin][amount];
 }
-//--------------------------------------------------------------------------------------------
 
+
+int main()
+{
+    vector<int> coins={1,2,5};
+    int amount=20;
+    cout << "Minimu coin need to make change(Top-Down) = " << minimumCoinToMakeChangeTopDown(amount,coins) << endl;
+    cout << "Minimu coin need to make change(Bottom-Up) = " << minimumCoinToMakeChangeBottomUp(amount,coins) << endl;
+    cout << "Total unique way to make change(Top-Down) = " << totalUniqueWayToMakeChangeTopDown(amount,coins) << endl;
+    cout << "Total unique way to make change(Bottom-Up) = " << totalUniqueWayToMakeChangeBottomUp(amount,coins) << endl;
+
+    return 0;
+}
